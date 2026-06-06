@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow - Painel de Controle Pessoal</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#10b981', // Emerald 500
+              dark: '#059669', // Emerald 600
+              light: '#34d399' // Emerald 400
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts - Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #0f172a;
+    }
+  </style>
+</head>
+<body class="h-full text-slate-100 flex flex-col justify-between overflow-x-hidden relative">
+
+  <!-- Círculos decorativos de fundo para efeito de profundidade (Sem Aurora clichê) -->
+  <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-emerald-950/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-slate-800/10 rounded-full blur-3xl pointer-events-none"></div>
+
+  <main class="flex-grow flex items-center justify-center p-6 z-10">
+    
+    <!-- TELA DE LOGIN (LOGIN VIEW) -->
+    <div id="loginView" class="w-full max-w-md bg-slate-900/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl shadow-2xl p-8 transition-all duration-300 transform scale-100">
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/10 text-brand mb-4 border border-emerald-500/20">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 002-2h2a2 2 0 002-2" />
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold tracking-tight text-white">Bem-vindo de volta</h1>
+        <p class="text-slate-400 text-sm mt-2">Acesse sua conta para gerenciar suas tarefas</p>
+      </div>
+
+      <form id="loginForm" class="space-y-5" novalidate>
+        <!-- Mensagem de erro geral -->
+        <div id="loginGeneralError" class="hidden bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm p-3.5 rounded-xl text-center"></div>
+
+        <div>
+          <label for="loginEmail" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">E-mail</label>
+          <input type="email" id="loginEmail" placeholder="seu@email.com" class="w-full bg-slate-950/40 border border-slate-800 focus:border-brand focus:ring-2 focus:ring-emerald-500/10 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-3 text-sm transition-all outline-none">
+          <div id="loginEmailError" class="hidden text-rose-500 text-xs mt-1.5 font-medium"></div>
+        </div>
+
+        <div>
+          <label for="loginPassword" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Senha</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" class="w-full bg-slate-950/40 border border-slate-800 focus:border-brand focus:ring-2 focus:ring-emerald-500/10 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-3 text-sm transition-all outline-none">
+          <div id="loginPasswordError" class="hidden text-rose-500 text-xs mt-1.5 font-medium"></div>
+        </div>
+
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 focus:ring-2 focus:ring-emerald-500/20 outline-none text-sm shadow-lg shadow-emerald-950/30">
+          Entrar na Conta
+        </button>
+      </form>
+
+      <div class="mt-8 text-center text-sm text-slate-400">
+        Não tem uma conta? 
+        <button id="toRegisterBtn" class="text-brand hover:text-brand-light font-medium transition-colors focus:outline-none">Crie uma aqui</button>
+      </div>
+    </div>
+
+    <!-- TELA DE CADASTRO (REGISTER VIEW) -->
+    <div id="registerView" class="hidden w-full max-w-md bg-slate-900/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl shadow-2xl p-8 transition-all duration-300 transform scale-100">
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/10 text-brand mb-4 border border-emerald-500/20">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold tracking-tight text-white">Criar nova conta</h1>
+        <p class="text-slate-400 text-sm mt-2">Comece a organizar sua rotina hoje mesmo</p>
+      </div>
+
+      <form id="registerForm" class="space-y-5" novalidate>
+        <!-- Mensagem de erro geral -->
+        <div id="registerGeneralError" class="hidden bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm p-3.5 rounded-xl text-center"></div>
+
+        <div>
+          <label for="registerName" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Nome Completo</label>
+          <input type="text" id="registerName" placeholder="Seu nome" class="w-full bg-slate-950/40 border border-slate-800 focus:border-brand focus:ring-2 focus:ring-emerald-500/10 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-3 text-sm transition-all outline-none">
+          <div id="registerNameError" class="hidden text-rose-500 text-xs mt-1.5 font-medium"></div>
+        </div>
+
+        <div>
+          <label for="registerEmail" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">E-mail</label>
+          <input type="email" id="registerEmail" placeholder="seu@email.com" class="w-full bg-slate-950/40 border border-slate-800 focus:border-brand focus:ring-2 focus:ring-emerald-500/10 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-3 text-sm transition-all outline-none">
+          <div id="registerEmailError" class="hidden text-rose-500 text-xs mt-1.5 font-medium"></div>
+        </div>
+
+        <div>
+          <label for="registerPassword" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Senha</label>
+          <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres" class="w-full bg-slate-950/40 border border-slate-800 focus:border-brand focus:ring-2 focus:ring-emerald-500/10 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-3 text-sm transition-all outline-none">
+          <div id="registerPasswordError" class="hidden text-rose-500 text-xs mt-1.5 font-medium"></div>
+        </div>
+
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 focus:ring-2 focus:ring-emerald-500/20 outline-none text-sm shadow-lg shadow-emerald-950/30">
+          Registrar Conta
+        </button>
+      </form>
+
+      <div class="mt-8 text-center text-sm text-slate-400">
+        Já possui uma conta? 
+        <button id="toLoginBtn" class="text-brand hover:text-brand-light font-medium transition-colors focus:outline-none">Fazer Login</button>
+      </div>
+    </div>
+
+    <!-- PAINEL DE CONTROLE (DASHBOARD VIEW) -->
+    <div id="dashboardView" class="hidden w-full max-w-4xl bg-slate-900/30 backdrop-blur-xl border border-slate-800/60 rounded-2xl shadow-2xl p-6 md:p-8 transition-all duration-300 transform scale-100">
+      
+      <!-- Cabeçalho do Painel -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-6 mb-8">
+        <div>
+          <span class="text-xs font-bold text-brand uppercase tracking-widest">Painel Geral</span>
+          <h2 class="text-2xl md:text-3xl font-bold text-white mt-1">Olá, <span id="welcomeUserName" class="text-slate-100">Usuário</span>! 👋</h2>
+          <p class="text-slate-400 text-sm mt-1">Gerencie suas tarefas e mantenha seu dia sob controle.</p>
+        </div>
+        <button id="logoutBtn" class="flex items-center gap-2 bg-slate-950/50 hover:bg-rose-500/10 border border-slate-800 hover:border-rose-500/30 text-slate-300 hover:text-rose-400 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 focus:outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          Sair da Conta
+        </button>
+      </div>
+
+      <!-- Estatísticas / Visão Geral -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+        <!-- Card Total -->
+        <div class="bg-slate-950/30 border border-slate-800/80 rounded-xl p-5 relative overflow-hidden group hover:border-slate-700/80 transition-all duration-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Total de Tarefas</p>
+              <h3 id="statTotal" class="text-3xl font-bold text-white mt-2">0</h3>
+            </div>
+            <div class="p-2.5 bg-slate-800/40 rounded-lg text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2" />
+              </svg>
+            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 h-1 bg-slate-800"></div>
+        </div>
+
+        <!-- Card Concluídas -->
+        <div class="bg-slate-950/30 border border-slate-800/80 rounded-xl p-5 relative overflow-hidden group hover:border-slate-700/80 transition-all duration-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Concluídas</p>
+              <h3 id="statDone" class="text-3xl font-bold text-emerald-400 mt-2">0</h3>
+            </div>
+            <div class="p-2.5 bg-emerald-500/10 rounded-lg text-brand">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 h-1 bg-emerald-500/30"></div>
+        </div>
+
+        <!-- Card Pendentes -->
+        <div class="bg-slate-950/30 border border-slate-800/80 rounded-xl p-5 relative overflow-hidden group hover:border-slate-700/80 transition-all duration-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Pendentes</p>
+              <h3 id="statOverdue" class="text-3xl font-bold text-amber-500 mt-2">0</h3>
+            </div>
+            <div class="p-2.5 bg-amber-500/10 rounded-lg text-amber-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 h-1 bg-amber-500/30"></div>
+        </div>
+      </div>
+
+      <!-- Layout de duas colunas: Criação de tarefas e Listagem -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Formulário de Criação (Coluna 1) -->
+        <div class="lg:col-span-1 bg-slate-950/25 border border-slate-800/80 rounded-xl p-6 h-fit">
+          <h3 class="text-lg font-bold text-white mb-4">Nova Tarefa</h3>
+          <form id="todoForm" class="space-y-4" novalidate>
+            <div>
+              <label for="todoTitle" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Título da Tarefa</label>
+              <input type="text" id="todoTitle" placeholder="Ex: Estudar JS" class="w-full bg-slate-950/40 border border-slate-800 focus:border-brand focus:ring-2 focus:ring-emerald-500/10 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-2.5 text-sm transition-all outline-none">
+              <div id="todoTitleError" class="hidden text-rose-500 text-xs mt-1.5 font-medium"></div>
+            </div>
+
+            <div>
+              <label for="todoType" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Tipo de Tarefa</label>
+              <select id="todoType" class="w-full bg-slate-950/40 border border-slate-800 focus:border-brand focus:ring-2 focus:ring-emerald-500/10 text-slate-100 rounded-xl px-4 py-2.5 text-sm transition-all outline-none">
+                <option value="Trabalho">Trabalho</option>
+                <option value="Pessoal">Pessoal</option>
+                <option value="Estudos">Estudos</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="todoDescription" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Descrição (Opcional)</label>
+              <textarea id="todoDescription" rows="3" placeholder="Detalhes sobre a tarefa..." class="w-full bg-slate-950/40 border border-slate-800 focus:border-brand focus:ring-2 focus:ring-emerald-500/10 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-2.5 text-sm transition-all outline-none resize-none"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 focus:ring-2 focus:ring-emerald-500/20 outline-none text-sm shadow-lg shadow-emerald-950/30">
+              Adicionar Tarefa
+            </button>
+          </form>
+        </div>
+
+        <!-- Listagem de Tarefas (Coluna 2 e 3) -->
+        <div class="lg:col-span-2">
+          <h3 class="text-lg font-bold text-white mb-4">Minhas Tarefas</h3>
+          <div id="todosContainer" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+            <!-- As tarefas serão injetadas via JS aqui -->
+            <p class="text-center text-slate-500 py-8">Carregando tarefas...</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="w-full text-center py-5 text-slate-500 text-xs border-t border-slate-900/60 z-10 bg-slate-950/10">
+    &copy; 2026 TaskFlow. Feito com HTML, CSS e JavaScript Vanilla.
+  </footer>
+
+  <!-- Link para o arquivo JavaScript principal -->
+  <script src="app.js"></script>
+</body>
+</html>
