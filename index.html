@@ -34,7 +34,7 @@
 </head>
 <body class="h-full text-slate-100 flex flex-col justify-between overflow-x-hidden relative">
 
-  <!-- Círculos decorativos de fundo para efeito de profundidade (Sem Aurora clichê) -->
+  <!-- Círculos decorativos de fundo para efeito de profundidade -->
   <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-emerald-950/10 rounded-full blur-3xl pointer-events-none"></div>
   <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-slate-800/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -240,6 +240,53 @@
     </div>
 
   </main>
+
+  <!-- MODAL DE EDIÇÃO (EDIT TODO MODAL) -->
+  <div id="editModal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-6 z-50 transition-all duration-350">
+    <div class="w-full max-w-md bg-slate-900/95 border border-slate-800 rounded-2xl shadow-2xl p-6 md:p-8 transform scale-100 transition-all relative">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-white">Editar Tarefa</h3>
+        <button id="closeEditModalBtn" class="text-slate-400 hover:text-white transition-colors focus:outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <form id="editTodoForm" class="space-y-4" novalidate>
+        <input type="hidden" id="editTodoId">
+        
+        <div>
+          <label for="editTodoTitle" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Título da Tarefa</label>
+          <input type="text" id="editTodoTitle" placeholder="Ex: Estudar JS" class="w-full bg-slate-950/40 border border-slate-800 focus:border-brand focus:ring-2 focus:ring-emerald-500/10 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-2.5 text-sm transition-all outline-none">
+          <div id="editTodoTitleError" class="hidden text-rose-500 text-xs mt-1.5 font-medium"></div>
+        </div>
+
+        <div>
+          <label for="editTodoType" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Tipo de Tarefa</label>
+          <select id="editTodoType" class="w-full bg-slate-950/40 border border-slate-800 focus:border-brand focus:ring-2 focus:ring-emerald-500/10 text-slate-100 rounded-xl px-4 py-2.5 text-sm transition-all outline-none">
+            <option value="Trabalho">Trabalho</option>
+            <option value="Pessoal">Pessoal</option>
+            <option value="Estudos">Estudos</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="editTodoDescription" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Descrição (Opcional)</label>
+          <textarea id="editTodoDescription" rows="3" placeholder="Detalhes sobre a tarefa..." class="w-full bg-slate-950/40 border border-slate-800 focus:border-brand focus:ring-2 focus:ring-emerald-500/10 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-2.5 text-sm transition-all outline-none resize-none"></textarea>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" id="cancelEditBtn" class="w-1/2 bg-slate-950/40 hover:bg-slate-800 border border-slate-800 text-slate-300 font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 focus:ring-2 focus:ring-slate-500/20 outline-none text-sm">
+            Cancelar
+          </button>
+          <button type="submit" class="w-1/2 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 focus:ring-2 focus:ring-emerald-500/20 outline-none text-sm shadow-lg shadow-emerald-950/30">
+            Salvar Alterações
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <footer class="w-full text-center py-5 text-slate-500 text-xs border-t border-slate-900/60 z-10 bg-slate-950/10">
     &copy; 2026 TaskFlow. Feito com HTML, CSS e JavaScript Vanilla.
